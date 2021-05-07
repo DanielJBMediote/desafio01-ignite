@@ -45,7 +45,7 @@ app.post('/users', (request, response) => {
     }
     users.push(user);
 
-    return response.status(200).send({ success: "User created successfully" })
+    return response.status(201).json(user)
 });
 
 /**
@@ -74,7 +74,7 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
 
   user.todos.push(todo);
   
-  return response.status(201).send({ success: "Task created successfully"})
+  return response.status(201).json(todo)
 });
 
 /**
@@ -94,7 +94,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   todo.title = title;
   todo.deadline = new Date(deadline);
 
-  return response.status(200).send({ success: "Tudo has been updated successfully." })
+  return response.status(201).json(todo)
 });
 
 /**
@@ -107,12 +107,12 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   const todo = user.todos.find(todo => todo.id === id);
 
   if (!todo) {
-    return response.status(404).send({ error: "Todo does not exists." })
+    return response.status(404).json({ error: "Todo does not exists." })
   }
 
   todo.done = true;
 
-  return response.status(200).send({ success: "Tudo has been updated successfully." })
+  return response.status(200).json(todo)
 });
 
 /**
@@ -125,12 +125,12 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   const todo = user.todos.find(todo => todo.id === id);
 
   if (!todo) {
-    return response.status(404).send({ error: "Todo does not exists." })
+    return response.status(404).json({ error: "Todo does not exists." })
   }
 
   user.todos.splice(todo, 1);
 
-  return response.status(200).send({ success: "Todo has been removed successfully." })
+  return response.status(204).json({ success: "Todo has been removed successfully." })
 });
 
 module.exports = app;
